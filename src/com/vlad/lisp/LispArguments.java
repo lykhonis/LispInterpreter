@@ -69,12 +69,14 @@ public class LispArguments implements Iterable<LispArgument> {
 	}
 
 	public LispArgument getByName(String name) {
-		for (LispArgument argument : mItems) {
-			if (argument.getName().equals(name)) {
-				return argument;
-			}
+		LispArgument argument = null;
+		int index = getIndexByName(name);
+		
+		if (index >= 0) {
+			argument = get(index);
 		}
-		return null;
+		
+		return argument;
 	}
 
 	@Override

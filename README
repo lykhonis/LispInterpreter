@@ -49,4 +49,5 @@
             (print "A+(A*B)=" (+ a (* a b))))
         (print "A must be less than B")))
 
-(test 4 6)
+(let ((x 3) (y 5) (a x) (b y))
+    (test a b))
