@@ -1,0 +1,52 @@
+;;; Simple Lisp interpreter
+;;; Here you can find what it supports now
+;;;
+;;; To run the interpreter, need to point the .lisp file out
+;;; Example: java -classpath ./bin com/vlad/Main ./README
+
+(() nil) ; nil / false / not true
+("String") ; String
+("nil") ; String / not nil
+('Quote) ; Quote
+(1 0.1) ; Integer and double
+
+(- 1) ; -1
+(- 6 2 3) ; 1
+(+ 1 2 3) ; 6
+(/ 9 3) ; 3
+(* 3 3) ; 9
+(* 4 5 2) ; 40
+(% 5 3) ; 2
+
+(< 0.1 2) ; t
+(< 2 1) ; nil
+(> 1 2) ; nil
+(> 2 0.1) ; t
+(= 1 1) ; t
+(= 0.1 1) ; nil
+(/= 1 1) ; nil
+(/= 0.1 1) ; t
+(>= 0.1 2) ; nil
+(>= 2 2) ; t
+(>= 3 0.2) ; t
+(<= 0.1 2) ; t
+(<= 2 2) ; t
+(<= 3 0.2) ; nil
+
+(if nil "yes" "no") ; no
+(if nil "yes") ; nil
+(if () "yes" "no") ; no
+(if () "yes") ; nill
+(if 0 "yes" "no") ; yes
+(if "" "yes" "no") ; yes
+(if (= 1 1) "yes" "no") ; yes
+(if (/= 1 1) "yes" "no") ; no
+
+(defun test (a b)
+    (if (< a b)
+        (progn
+            (print "A=" a ",B=" b)
+            (print "A+(A*B)=" (+ a (* a b))))
+        (print "A must be less than B")))
+
+(test 4 6)
