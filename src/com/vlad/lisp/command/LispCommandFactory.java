@@ -58,6 +58,30 @@ public class LispCommandFactory {
 			command = new LispIf(list, global);
 		} else if ("progn".equals(commandName)) {
 			command = new LispProgn(list, global);
+		} else if ("cond".equals(commandName)) {
+			command = new LispCond(list, global);
+		} else if ("not".equals(commandName)) {
+			command = new LispNot(list, global);
+		} else if ("null".equals(commandName)) {
+			command = new LispNull(list, global);
+		} else if ("and".equals(commandName)) {
+			command = new LispAnd(list, global);
+		} else if ("or".equals(commandName)) {
+			command = new LispOr(list, global);
+		} else if ("commonp".equals(commandName)) {
+			command = new LispCommonp(list, global);
+		} else if ("floatp".equals(commandName)) {
+			command = new LispFloatp(list, global);
+		} else if ("functionp".equals(commandName)) {
+			command = new LispFunctionp(list, global);
+		} else if ("integerp".equals(commandName)) {
+			command = new LispIntegerp(list, global);
+		} else if ("numberp".equals(commandName)) {
+			command = new LispNumberp(list, global);
+		} else if ("stringp".equals(commandName)) {
+			command = new LispStringp(list, global);
+		} else if ("symbolp".equals(commandName)) {
+			command = new LispSymbolp(list, global);
 		} else {
 			LispDefun defun = global.getDefinedFunctionByName(commandName);
 			if (defun != null) {
@@ -71,7 +95,8 @@ public class LispCommandFactory {
 	}
 
 	private static final List<String> mValidCommandNames = Arrays.asList("let", "print", "+", "-", "*", "/", "%", "<",
-			"<=", "=", ">", ">=", "/=", "defun", "if", "progn");
+			"<=", "=", ">", ">=", "/=", "defun", "if", "progn", "cond", "not", "null", "and", "or", "commonp",
+			"floatp", "functionp", "integerp", "numberp", "stringp", "symbolp");
 
 	public static boolean isPossibleCommand(LispAtom atom) {
 		if (atom.isList() && !atom.isNil()) {
@@ -84,11 +109,15 @@ public class LispCommandFactory {
 		return false;
 	}
 
+	public static boolean isValidCommandName(String name) {
+		return mValidCommandNames.contains(name);
+	}
+
 	public static boolean isCommand(LispAtom atom, LispGlobal global) {
 		if (isPossibleCommand(atom)) {
 			String commandName = (String) ((LispList) atom).get(0).getValue();
 
-			return mValidCommandNames.contains(commandName) || global.isDefinedFunction(commandName);
+			return isValidCommandName(commandName) || global.isDefinedFunction(commandName);
 		}
 		return false;
 	}

@@ -5,6 +5,7 @@ import com.vlad.lisp.LispException;
 import com.vlad.lisp.LispGlobal;
 import com.vlad.lisp.atom.LispArgument;
 import com.vlad.lisp.atom.LispAtom;
+import com.vlad.lisp.atom.LispBoolean;
 import com.vlad.lisp.atom.LispList;
 
 public abstract class LispAbstractCommand implements LispCommand {
@@ -50,12 +51,16 @@ public abstract class LispAbstractCommand implements LispCommand {
 
 		if (!result.isNil()) {
 			if (result.isAtom()) {
-				LispArgument argument = arguments.getByName((String) result.getValue());
-				if (argument == null) {
-					throw new LispException("Unknown atom", atom);
-				}
+				if (result.getValue().equals("t")) {
+					result = new LispBoolean(true);
+				} else {
+					LispArgument argument = arguments.getByName((String) result.getValue());
+					if (argument == null) {
+						throw new LispException("Unknown atom", atom);
+					}
 
-				result = argument.getAtom();
+					result = argument.getAtom();
+				}
 			} else if (LispCommandFactory.isPossibleCommand(result)) {
 				LispCommand command = LispCommandFactory.create(result, getGlobal());
 

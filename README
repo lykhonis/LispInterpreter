@@ -10,6 +10,19 @@
 ('Quote) ; Quote
 (1 0.1) ; Integer and double
 
+(commonp 1) ; t
+(floatp 0.1) ; t
+(integerp 1) ; t
+(numberp 1) ; t
+(numberp 0.1) ; t
+(stringp "String") ; t
+(symbolp 'Symbol) ; t
+(functionp +) ; t
+
+(functionp negative) ; nil
+(defun negative (x) (- x))
+(functionp negative) ; t
+
 (- 1) ; -1
 (- 6 2 3) ; 1
 (+ 1 2 3) ; 6
@@ -36,18 +49,40 @@
 (if nil "yes" "no") ; no
 (if nil "yes") ; nil
 (if () "yes" "no") ; no
-(if () "yes") ; nill
+(if () "yes") ; nil
+(if t "yes" "no") ; yes
 (if 0 "yes" "no") ; yes
 (if "" "yes" "no") ; yes
 (if (= 1 1) "yes" "no") ; yes
 (if (/= 1 1) "yes" "no") ; no
+(if (not nil) "yes" "no") ; no
+(if (not ()) "yes" "no") ; no
+(if (not t) "yes" "no") ; yes
+(if (not 0) "yes" "no") ; yes
+(if (null nil) "yes" "no") ; yes
+(if (null ()) "yes" "no") ; yes
+(if (null t) "yes" "no") ; no
+(if (null 0) "yes" "no") ; no
 
+(if (and (= 1 1) (< 1 2)) "yes" "no") ; yes
+(if (and (< 1 1) (/= 1 2)) "yes" "no") ; no
+(if (or (= 1 1) (< 1 2)) "yes" "no") ; yes
+(if (or (< 1 1) (/= 1 2)) "yes" "no") ; yes
+
+(if (or t (print "Never see")) "yes" "no") ; always yes, but print won't be called anytime
+(if (and nil (print "Never see")) "yes" "no") ; always no and print won't be called anytime
+(if (and t (print "Always checked")) "yes" "no") ; always yes and print will be called as well
+
+; Supports: defun, cond, progn, let
 (defun test (a b)
-    (if (< a b)
-        (progn
+    (cond
+        ((< a b) (progn
             (print "A=" a ",B=" b)
-            (print "A+(A*B)=" (+ a (* a b))))
-        (print "A must be less than B")))
+            (print "A+(A*B)=" (+ a (* a b)))))
+        ((= a b) (progn
+            (print "A=B=" a)
+            (print "A+B=" (+ a b))))
+        (t (print "A must be less than B"))))
 
 (let ((x 3) (y 5) (a x) (b y))
     (test a b))

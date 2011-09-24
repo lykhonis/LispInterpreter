@@ -1,5 +1,7 @@
 package com.vlad.lisp.atom;
 
+import com.vlad.lisp.atom.LispNumber.Type;
+
 public class LispAtom {
 
 	private Object mValue;
@@ -18,6 +20,14 @@ public class LispAtom {
 	
 	public boolean isNumber() {
 		return getClass().equals(LispNumber.class);
+	}
+	
+	public boolean isInteger() {
+		return isNumber() && (((LispNumber) this).getType() == Type.INTEGER);
+	}
+	
+	public boolean isDouble() {
+		return isNumber() && (((LispNumber) this).getType() == Type.DOUBLE);
 	}
 	
 	public boolean isString() {
@@ -41,6 +51,6 @@ public class LispAtom {
 	}
 	
 	public boolean isBoolean() {
-		return getClass().equals(LispBoolean.class);
+		return getClass().equals(LispBoolean.class) || isNil() || (isAtom() && getValue().equals("t"));
 	}
 }
